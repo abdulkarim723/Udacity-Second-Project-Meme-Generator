@@ -3,6 +3,8 @@ import os
 import requests
 from flask import Flask, render_template, abort, request
 
+from ImportEngine.WrapperImporter import WrapperImporter
+
 # @TODO Import your Ingestor and MemeEngine classes
 
 app = Flask(__name__)
@@ -18,9 +20,10 @@ def setup():
                    './_data/DogQuotes/DogQuotesPDF.pdf',
                    './_data/DogQuotes/DogQuotesCSV.csv']
 
-    # TODO: Use the Ingestor class to parse all files in the
     # quote_files variable
-    quotes = None
+    quotes = []
+    for file in quote_files:
+        quotes.extend(WrapperImporter.parse(file))
 
     images_path = "./_data/photos/dog/"
 
