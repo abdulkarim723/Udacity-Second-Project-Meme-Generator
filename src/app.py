@@ -1,6 +1,8 @@
 import random
 import os
 import requests
+import glob
+from PIL import Image
 from flask import Flask, render_template, abort, request
 
 from ImportEngine.WrapperImporter import WrapperImporter
@@ -21,17 +23,18 @@ def setup():
                    './_data/DogQuotes/DogQuotesCSV.csv']
 
     # quote_files variable
-    quotes = []
-    for file in quote_files:
-        quotes.extend(WrapperImporter.parse(file))
+    quotes_ = []
 
-    images_path = "./_data/photos/dog/"
+    images_path = "./_data/photos/dog/*.jpg"
+    try:
+        quotes_ = [WrapperImporter.parse(file) for file in quote_files]
 
-    # TODO: Use the pythons standard library os class to find all
-    # images within the images images_path directory
-    imgs = None
+    except Exception as e:
+        print(e)
 
-    return quotes, imgs
+    images = [Image.open(image) for image in glob.glob(images_path)]
+
+    return quotes_, images
 
 
 quotes, imgs = setup()
