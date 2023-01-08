@@ -1,26 +1,19 @@
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-from datetime import datetime
 import random
-import os
 
 
 class MemeEngine:
     def __init__(self, image_path):
-        self.img = image_path
+        self.img = None
         self.width = 0
         self.height = 0
         self.ratio = 1.0
         self.width = 500
         self.height = 500
-        self.path_of_saved_images = os.path.abspath(os.getcwd()) + '/files/'
-
-        """ load the image """
-        self.img = Image.open(image_path)
-
-        """ setup the image size """
-        self.img = self.setup_image_size(self.img)
+        self.path_of_saved_images = image_path
+        self.path_of_saved_image = None
 
     def setup_image_size(self, image):
         """load the image and check it's size
@@ -38,9 +31,17 @@ class MemeEngine:
 
         return image
 
-    def make_meme(self, text, author, width=500) -> str:
+    def make_meme(self, path, text, author, width=500) -> str:
 
+        print(path.split('/')[-1])
+        self.path_of_saved_image = self.path_of_saved_images + path.split('/')[-1]
         self.width = width
+
+        """ load the image """
+        self.img = Image.open(path)
+
+        """ setup the image size """
+        self.img = self.setup_image_size(self.img)
 
         """ add text to the image """
         im = ImageDraw.Draw(self.img)
@@ -51,14 +52,10 @@ class MemeEngine:
 
         im.text((x + 30, y + 50), author, font=ImageFont.truetype('arial.ttf', 50),
                 fill=(255, 255, 255))
-        img_name = datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + '.jpg'
 
-        if not os.path.exists(self.path_of_saved_images):
-            os.makedirs(self.path_of_saved_images)
-        self.path_of_saved_images += img_name
-        self.img.save(self.path_of_saved_images)
+        self.img.save(self.path_of_saved_image)
 
-        return self.path_of_saved_images
+        return self.path_of_saved_image
 
     """ this property function is to choose a random x value for the text """
     @property
@@ -73,3 +70,8 @@ class MemeEngine:
     @property
     def rand_val(self):
         return random.randint(0, 255)
+
+
+if __name__ == '__main__':
+    meme = MemeEngine('./files')
+    meme.make_meme('../_data/photos/dog/xander_1.jpg', "hello world", "author")

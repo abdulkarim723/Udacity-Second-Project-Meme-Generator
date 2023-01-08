@@ -11,7 +11,7 @@ from memeEngine.memeEngine import MemeEngine
 
 app = Flask(__name__)
 
-meme = MemeEngine('./static')
+meme = MemeEngine('./static/')
 
 
 def setup():
@@ -25,14 +25,14 @@ def setup():
     # quote_files variable
     quotes_ = []
 
-    images_path = "./_data/photos/dog/*.jpg"
+    images_path = "./_data/photos/dog/"
+    images = []
     try:
         [quotes_.extend(Ingestor.parse(file)) for file in quote_files]
 
     except Exception as e:
         print(e)
-
-    images = [Image.open(image) for image in glob.glob(images_path)]
+    [images.append(images_path + image) for image in os.listdir(images_path)]
 
     return quotes_, images
 
@@ -60,14 +60,20 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
+    image_url = request.form.get('image_url')
+    response = requests.get(image_url)
 
-    path = None
+    tmp_image = f'./{random.randint(0, 1000)}.png'
+
+    with open(tmp_image, 'wb') as img:
+        img.write(response.content)
+
+    author = request.form.get('author')
+    quote = request.form.get('body')
+
+    path = meme.make_meme(tmp_image, quote, author)
+
+    os.remove(tmp_image)
 
     return render_template('meme.html', path=path)
 
