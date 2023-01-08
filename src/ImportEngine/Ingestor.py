@@ -8,7 +8,7 @@ from .PdfImporter import PDFImporter
 from .TxtImporter import TxtImporter
 
 
-class WrapperImporter(IngestorInterface):
+class Ingestor(IngestorInterface):
     allowed_extensions = ['docx', 'csv', 'pdf', 'txt']
 
     @classmethod
