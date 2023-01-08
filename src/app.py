@@ -5,9 +5,9 @@ import glob
 from PIL import Image
 from flask import Flask, render_template, abort, request
 
-from ImportEngine.WrapperImporter import WrapperImporter
+from ImportEngine.Ingestor import Ingestor
+from memeEngine.memeEngine import MemeEngine
 
-# @TODO Import your Ingestor and MemeEngine classes
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def setup():
 
     images_path = "./_data/photos/dog/*.jpg"
     try:
-        quotes_ = [WrapperImporter.parse(file) for file in quote_files]
+        [quotes_.extend(Ingestor.parse(file)) for file in quote_files]
 
     except Exception as e:
         print(e)
@@ -44,13 +44,8 @@ quotes, imgs = setup()
 def meme_rand():
     """ Generate a random meme """
 
-    # @TODO:
-    # Use the random python standard library class to:
-    # 1. select a random image from imgs array
-    # 2. select a random quote from the quotes array
-
-    img = None
-    quote = None
+    img = random.choice(imgs)
+    quote = random.choice(quotes)
     path = meme.make_meme(img, quote.body, quote.author)
     return render_template('meme.html', path=path)
 
