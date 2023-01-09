@@ -44,27 +44,15 @@ class MemeEngine:
 
         """ add text to the image """
         im = ImageDraw.Draw(self.img)
-        x = self.rand_x
-        y = self.rand_y
-        im.text((x, y), text, font=ImageFont.truetype('arial.ttf', 50),
-                fill=(self.rand_val, self.rand_val, 255))
+        font = ImageFont.truetype('arial.ttf', size=30)
+        im.text((10, 30), text, font=font, fill=(0, 0, 0))
 
-        im.text((x + 30, y + 50), author, font=ImageFont.truetype('arial.ttf', 50),
-                fill=(255, 255, 255))
+        im.text((20, 70), author, font=font, fill=(255, 255, 255))
 
         self.img.save(self.path_of_saved_image)
 
         return self.path_of_saved_image
 
-    """ this property function is to choose a random x value for the text """
-    @property
-    def rand_x(self):
-        return random.randint(0, self.width/2)
-
-    """ random y value """
-    @property
-    def rand_y(self):
-        return random.randint(0, self.height/2)
 
     @property
     def rand_val(self):
