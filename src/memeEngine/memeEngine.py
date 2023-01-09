@@ -33,7 +33,6 @@ class MemeEngine:
 
     def make_meme(self, path, text, author, width=500) -> str:
 
-        print(path.split('/')[-1])
         self.path_of_saved_image = self.path_of_saved_images + path.split('/')[-1]
         self.width = width
 
@@ -71,7 +70,8 @@ class MemeEngine:
     def rand_val(self):
         return random.randint(0, 255)
 
-
+"""
 if __name__ == '__main__':
     meme = MemeEngine('./files')
     meme.make_meme('../_data/photos/dog/xander_1.jpg', "hello world", "author")
+"""
