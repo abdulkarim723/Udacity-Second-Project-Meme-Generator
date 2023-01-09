@@ -1,0 +1,7 @@
+requests
+pandas
+flask
+pillow
+typing
+python-docx
+argparse
