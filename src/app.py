@@ -17,15 +17,15 @@ meme = MemeEngine('./static/')
 def setup():
     """ Load all resources """
 
-    quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                   './_data/DogQuotes/DogQuotesDOCX.docx',
-                   './_data/DogQuotes/DogQuotesPDF.pdf',
-                   './_data/DogQuotes/DogQuotesCSV.csv']
+    quote_files = ['./src/_data/DogQuotes/DogQuotesTXT.txt',
+                   './src/_data/DogQuotes/DogQuotesDOCX.docx',
+                   './src/_data/DogQuotes/DogQuotesPDF.pdf',
+                   './src/_data/DogQuotes/DogQuotesCSV.csv']
 
     # quote_files variable
     quotes_ = []
 
-    images_path = "./_data/photos/dog/"
+    images_path = "./src/_data/photos/dog/"
     images = []
     try:
         [quotes_.extend(Ingestor.parse(file)) for file in quote_files]
