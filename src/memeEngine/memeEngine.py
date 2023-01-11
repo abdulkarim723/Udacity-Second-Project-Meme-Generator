@@ -2,9 +2,13 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 import random
+import os
 
 
 class MemeEngine:
+    """"Meme Engine
+
+    this class is responsible to create a meme combined from a photo, quote and author"""
     def __init__(self, image_path):
         self.img = None
         self.width = 0
@@ -13,6 +17,8 @@ class MemeEngine:
         self.width = 500
         self.height = 500
         self.path_of_saved_images = image_path
+        if os.path.exists(self.path_of_saved_images) is False:
+            os.mkdir(self.path_of_saved_images)
         self.path_of_saved_image = None
 
     def setup_image_size(self, image):
