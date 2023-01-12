@@ -1,8 +1,6 @@
 import random
 import os
 import requests
-import glob
-from PIL import Image
 from flask import Flask, render_template, abort, request
 
 from ImportEngine.Ingestor import Ingestor
