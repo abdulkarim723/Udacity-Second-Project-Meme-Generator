@@ -53,7 +53,11 @@ class MemeEngine:
 
         """ add text to the image """
         im = ImageDraw.Draw(self.img)
-        font = ImageFont.truetype('../fonts/arial.ttf', size=30)
+
+        try:
+            font = ImageFont.truetype('./fonts/arial.ttf', size=30)
+        except Exception:
+            font = ImageFont.load_default()
         im.text((10, 30), text, font=font, fill=(0, 0, 0))
 
         im.text((20, 70), author, font=font, fill=(255, 255, 255))
