@@ -34,8 +34,8 @@ class MemeEngine:
         if self.width > 500:
             self.ratio = (self.width - 500) / 500
             self.width = 500
-            self.height = self.height * self.ratio
-            return image.resize(self.width, self.height)
+            self.height = int(self.height * self.ratio)
+            return image.resize((self.width, self.height))
 
         return image
 
