@@ -1,10 +1,11 @@
 import random
 import os
+import sys
 import requests
-from flask import Flask, render_template, abort, request
+from flask import Flask, render_template, request
 
-from ImportEngine.Ingestor import Ingestor
-from memeEngine.memeEngine import MemeEngine
+from ImportEngine.Ingestor import Ingestor, FileExtensionNotSupported
+from memeEngine.memeEngine import MemeEngine, PathNotFound
 
 
 app = Flask(__name__)
@@ -28,8 +29,9 @@ def setup():
     try:
         [quotes_.extend(Ingestor.parse(file)) for file in quote_files]
 
-    except Exception as e:
+    except FileExtensionNotSupported as e:
         print(e)
+        sys.exit(1)
     [images.append(images_path + image) for image in os.listdir(images_path)]
 
     return quotes_, images
@@ -44,7 +46,11 @@ def meme_rand():
 
     img = random.choice(imgs)
     quote = random.choice(quotes)
-    path = meme.make_meme(img, quote.body, quote.author)
+    try:
+        path = meme.make_meme(img, quote.body, quote.author)
+    except PathNotFound as e:
+        print(e)
+        sys.exit(1)
     return render_template('meme.html', path=path)
 
 
@@ -59,7 +65,10 @@ def meme_post():
     """ Create a user defined meme """
 
     image_url = request.form.get('image_url')
-    response = requests.get(image_url)
+    try:
+        response = requests.get(image_url)
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
 
     tmp_image = f'./{random.randint(0, 1000)}.png'
 
@@ -69,7 +78,12 @@ def meme_post():
     author = request.form.get('author')
     quote = request.form.get('body')
 
-    path = meme.make_meme(tmp_image, quote, author)
+    try:
+        path = meme.make_meme(tmp_image, quote, author)
+    except PathNotFound as e:
+        print(e)
+        os.remove(tmp_image)
+        sys.exit(1)
 
     os.remove(tmp_image)
 

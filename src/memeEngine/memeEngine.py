@@ -5,6 +5,10 @@ import random
 import os
 
 
+class PathNotFound(Exception):
+    """custom class to raise exceptions in case non valid path"""
+
+
 class MemeEngine:
     """"Meme Engine
 
@@ -45,8 +49,13 @@ class MemeEngine:
             self.path_of_saved_images + path.split('/')[-1]
         self.width = width
 
-        """ load the image """
-        self.img = Image.open(path)
+        try:
+            """ load the image """
+            self.img = Image.open(path)
+        except Exception as e:
+            print(e)
+            raise PathNotFound("image path not found")
+
 
         """ setup the image size """
         self.img = self.setup_image_size(self.img)

@@ -8,13 +8,17 @@ from .PdfImporter import PDFImporter
 from .TxtImporter import TxtImporter
 
 
+class FileExtensionNotSupported(Exception):
+    """custom class for non supported file extensions"""
+
+
 class Ingestor(IngestorInterface):
     allowed_extensions = ['docx', 'csv', 'pdf', 'txt']
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         if not cls.can_ingest(path):
-            raise Exception('cannot process this type of files')
+            raise FileExtensionNotSupported('cannot process this type of files')
 
         ext = path.split('.')[-1]
 

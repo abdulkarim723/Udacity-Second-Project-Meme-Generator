@@ -1,14 +1,12 @@
 import os
 import random
-import argparse
-from ImportEngine.Ingestor import Ingestor, QuoteModel
-from memeEngine.memeEngine import MemeEngine
+import sys
+from ImportEngine.Ingestor import Ingestor, QuoteModel, FileExtensionNotSupported
+from memeEngine.memeEngine import MemeEngine, PathNotFound
 
 
 def generate_meme(path=None, body=None, author=None):
     """ Generate a meme given an path and a quote """
-    img = None
-    quote = None
 
     if path is None:
         images = "./_data/photos/dog/"
@@ -27,7 +25,11 @@ def generate_meme(path=None, body=None, author=None):
                        './_data/DogQuotes/DogQuotesCSV.csv']
         quotes = []
         for f in quote_files:
-            quotes.extend(Ingestor.parse(f))
+            try:
+                quotes.extend(Ingestor.parse(f))
+            except FileExtensionNotSupported as e:
+                print(e)
+                sys.exit(1)
 
         quote = random.choice(quotes)
     else:
@@ -36,6 +38,11 @@ def generate_meme(path=None, body=None, author=None):
         quote = QuoteModel(body, author)
 
     meme = MemeEngine('./')
-    path = meme.make_meme(img, quote.body, quote.author)
+    try:
+        path = meme.make_meme(img, quote.body, quote.author)
+    except PathNotFound as e:
+        print(e)
+        sys.exit(1)
+
     return path
 
