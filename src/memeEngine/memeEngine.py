@@ -3,6 +3,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 import random
 import os
+import textwrap
 
 
 class PathNotFound(Exception):
@@ -56,7 +57,6 @@ class MemeEngine:
             print(e)
             raise PathNotFound("image path not found")
 
-
         """ setup the image size """
         self.img = self.setup_image_size(self.img)
 
@@ -67,7 +67,7 @@ class MemeEngine:
             font = ImageFont.truetype('./fonts/arial.ttf', size=30)
         except Exception:
             font = ImageFont.load_default()
-        im.text((10, 30), text, font=font, fill=(0, 0, 0))
+        im.text((10, 30), textwrap.TextWrapper(width=50).fill(text), font=font, fill=(0, 0, 0))
 
         im.text((20, 70), author, font=font, fill=(255, 255, 255))
 
