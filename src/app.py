@@ -4,8 +4,9 @@ import sys
 import requests
 from flask import Flask, render_template, request
 
-from ImportEngine.Ingestor import Ingestor, FileExtensionNotSupported
-from memeEngine.memeEngine import MemeEngine, PathNotFound
+from ImportEngine.Ingestor import Ingestor
+from memeEngine.memeEngine import MemeEngine
+from Exceptions import PathNotFound, FileExtensionNotSupported
 
 
 app = Flask(__name__)
@@ -29,7 +30,7 @@ def setup():
     try:
         [quotes_.extend(Ingestor.parse(file)) for file in quote_files]
 
-    except FileExtensionNotSupported as e:
+    except FileExtensionNotSupported or PathNotFound  as e:
         print(e)
         sys.exit(1)
     [images.append(images_path + image) for image in os.listdir(images_path)]

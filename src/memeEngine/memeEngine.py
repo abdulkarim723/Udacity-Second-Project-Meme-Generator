@@ -4,10 +4,9 @@ from PIL import ImageFont
 import random
 import os
 import textwrap
-
-
-class PathNotFound(Exception):
-    """custom class to raise exceptions in case non valid path"""
+import sys
+sys.path.append("..")
+from Exceptions import PathNotFound
 
 
 class MemeEngine:
@@ -46,8 +45,7 @@ class MemeEngine:
 
     def make_meme(self, path, text, author, width=500) -> str:
 
-        self.path_of_saved_image = \
-            self.path_of_saved_images + path.split('/')[-1]
+        self.path_of_saved_image = path.split('/')[-1]
         self.width = width
 
         try:

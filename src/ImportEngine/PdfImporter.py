@@ -13,7 +13,7 @@ class PDFImporter(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         if not cls.can_ingest(path):
-            raise Exception('Cannot Ingest Exception')
+            raise FileExtensionNotSupported('Cannot Ingest Exception')
         tmp = f'./{random.randint(0,1000000)}.txt'
         call = subprocess.call(['pdftotext', '-layout', path, tmp])
         file_ref = open(tmp, "r")

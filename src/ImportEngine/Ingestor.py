@@ -1,4 +1,5 @@
 from typing import List
+import os
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
@@ -7,9 +8,9 @@ from .CsvImporter import CsvImporter
 from .PdfImporter import PDFImporter
 from .TxtImporter import TxtImporter
 
-
-class FileExtensionNotSupported(Exception):
-    """custom class for non supported file extensions"""
+import sys
+sys.path.append("..")
+from Exceptions import FileExtensionNotSupported, PathNotFound
 
 
 class Ingestor(IngestorInterface):
@@ -17,6 +18,9 @@ class Ingestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
+        if os.path.exists(path) is False:
+            raise PathNotFound(f"path: {path} does not exist")
+
         if not cls.can_ingest(path):
             raise FileExtensionNotSupported('cannot process this type of files')
 

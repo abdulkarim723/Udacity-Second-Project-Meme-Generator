@@ -1,8 +1,9 @@
 import os
 import random
 import sys
-from ImportEngine.Ingestor import Ingestor, QuoteModel, FileExtensionNotSupported
-from memeEngine.memeEngine import MemeEngine, PathNotFound
+from ImportEngine.Ingestor import Ingestor, QuoteModel
+from memeEngine.memeEngine import MemeEngine
+from Exceptions import PathNotFound, FileExtensionNotSupported
 
 
 def generate_meme(path=None, body=None, author=None):
@@ -30,8 +31,13 @@ def generate_meme(path=None, body=None, author=None):
             except FileExtensionNotSupported as e:
                 print(e)
                 sys.exit(1)
-
+            except PathNotFound as e:
+                print(e)
+                sys.exit(1)
         quote = random.choice(quotes)
+
+        if author:
+            quote.author = author
     else:
         if author is None:
             raise Exception('Author Required if Body is Used')

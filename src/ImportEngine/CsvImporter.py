@@ -11,7 +11,7 @@ class CsvImporter(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         if not cls.can_ingest(path):
-            raise Exception('cannot process this type of files')
+            raise FileExtensionNotSupported('cannot process this type of files')
 
         quotemodels = []
         csv = pd.read_csv(path)

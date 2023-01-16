@@ -1,6 +1,5 @@
 from typing import List
 import docx
-
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
@@ -11,7 +10,7 @@ class DocxImporter(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         if not cls.can_ingest(path):
-            raise Exception('cannot process this type of files')
+            raise FileExtensionNotSupported('cannot process this type of files')
 
         quotemodels = []
         file_ref = open(path, 'rb')
